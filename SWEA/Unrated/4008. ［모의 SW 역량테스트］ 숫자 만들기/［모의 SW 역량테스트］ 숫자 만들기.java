@@ -2,81 +2,64 @@ import java.io.*;
 import java.util.*;
 
 public class Solution {
-	// MAX, MIN
+	static int N;
+	static int[] operators, operands;
 	static int max = Integer.MIN_VALUE;
 	static int min = Integer.MAX_VALUE;
-	
-	// INPUT
-	static int N;
-	static int[] operators;
-	static int[] operands;
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
-		
+	
 		int T = Integer.parseInt(br.readLine());
-		
 		for (int t = 0; t < T; t++) {
-			N = Integer.parseInt(br.readLine());
-			
-			// 연산자 입력
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			int[] numOperators = new int[4];
-			for (int i = 0; i < 4; i++) {
-				numOperators[i] = Integer.parseInt(st.nextToken());
-			}
-			// 연산자 배열 입력 전처리
+			N = Integer.parseInt(st.nextToken());
+			operands = new int[N];
 			operators = new int[N-1];
-			int idx = 0;
-			for (int i = 0; i < 4; i++) {
-				for(int j = 0; j < numOperators[i]; j++) {
+			
+			st = new StringTokenizer(br.readLine());
+			int[] tmp = new int[4];
+			for(int i = 0, idx = 0; i < 4; i++) {
+				tmp[i] = Integer.parseInt(st.nextToken());
+				for (int j = 0; j < tmp[i]; j++) {
 					operators[idx++] = i;
 				}
 			}
 			
-			// 피연산자 입력
-			operands = new int[N];
+			
 			st = new StringTokenizer(br.readLine());
-			for (int i = 0; i < N; i++) {
+			for(int i = 0; i < N; i++) {
 				operands[i] = Integer.parseInt(st.nextToken());
 			}
 			
 			do {
-				calculator();
-			} while(np());
+				calculator(); // 계산
+			} while(np()); // 다음 순열 생성
 			
 			sb.append("#").append(t+1).append(" ")
-				.append(max-min).append("\n");
+				.append(Math.abs(max-min)).append("\n");
 			
+			N = 0;
 			max = Integer.MIN_VALUE;
 			min = Integer.MAX_VALUE;
-			
 		}
 		
 		System.out.println(sb);
-
-		
 	}
-
 	
 	public static boolean np() {
-		// 1. 꼭대기 찾기
-		int i = N-2;
-		while(i>0 && operators[i-1]>=operators[i]) --i;
+		int i = operators.length - 1;
+		while(i>0 && operators[i-1] >= operators[i]) --i;
 		
-		// 2. 종료
-		if (i==0) return false;
+		if(i == 0) return false;
 		
-		// 3. 교환 대상 찾기
-		int j = N-2;
-		while(operators[i-1]>=operators[j]) --j;
+		int j = operators.length - 1;
+		while(operators[i-1] >= operators[j]) --j;
 		
-		// 4. 교환
-		swap(i-1,j);
+		swap(i-1, j);
 		
-		// 5. 뒷부분 reverse
-		int k = N-2;
+		int k = operators.length - 1;
 		while(i<k) {
 			swap(i++,k--);
 		}
@@ -91,25 +74,23 @@ public class Solution {
 	}
 	
 	public static void calculator() {
-		int result = 0;
-		result = operands[0];
-		for (int i = 1; i < operands.length; i++) {
-			if (operators[i-1] == 0) {
-				result += operands[i];
-			} else if (operators[i-1] == 1) {
-				result -= operands[i];
-			} else if (operators[i-1] == 2) {
-				result *= operands[i];
-			} else if (operators[i-1] == 3) {
-				result /= operands[i];
+		int result = operands[0];
+		
+		for (int i = 0; i < operators.length; i++) {
+			if(operators[i] == 0) {
+				result += operands[i+1];
+			} else if(operators[i] == 1) {
+				result -= operands[i+1];
+			} else if(operators[i] == 2) {
+				result *= operands[i+1];
+			} else if(operators[i] == 3) {
+				result /= operands[i+1];
 			} else {
-				System.out.println("your program is fucked up");
+				return;
 			}
 		}
 		
-		max = Integer.max(result, max);
-		min = Integer.min(result, min);
+		max = Math.max(result, max);
+		min = Math.min(result, min);
 	}
-	
-
 }
