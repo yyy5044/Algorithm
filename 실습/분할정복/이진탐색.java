@@ -1,6 +1,11 @@
 import java.util.*;
 import java.io.*;
 
+// 입력
+// 7
+// 2 4 7 9 11 19 23
+// 4
+
 public class 이진탐색 {
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
