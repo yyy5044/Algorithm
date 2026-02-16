@@ -3,8 +3,6 @@ import java.io.*;
 
 public class Solution {
 	static int[][] map;
-	static int[] dx = {-1,1,0};
-	static int[] dy = {0,0,1};
 	
 	public static void main(String[] args) throws IOException{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
