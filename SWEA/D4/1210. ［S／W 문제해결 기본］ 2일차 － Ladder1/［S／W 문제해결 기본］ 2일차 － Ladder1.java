@@ -8,7 +8,7 @@ public class Solution {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
 	
-		// int T = Integer.parseInt(br.readLine());	
+		int end = 0;
 		for (int t = 0; t < 10; t++) {
 			int testNum = Integer.parseInt(br.readLine());
 			map = new int[100][100];
@@ -17,17 +17,12 @@ public class Solution {
 				StringTokenizer st = new StringTokenizer(br.readLine());
 				for (int j = 0; j < 100; j++) {
 					map[i][j] = Integer.parseInt(st.nextToken());
+					if (map[99][j] == 2) { // 입력 받으면서 도착 지점 저장
+						end = j;
+					}
 				}
 			}
-			
-			int end = 0;
-			// 시작점 저장
-			for (int x = 0; x < 100; x++) {
-				if (map[99][x] == 2) {
-					end = x;
-				}
-			}
-			
+	
 			int x = end;
 			int y = 99;
 			while(y > 0) {
@@ -53,7 +48,6 @@ public class Solution {
 		
 		System.out.println(sb);
 	}
-	
-	
+
 }
 
