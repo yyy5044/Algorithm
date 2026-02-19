@@ -16,16 +16,17 @@ public class Solution {
 			N = Integer.parseInt(br.readLine());
 			map = new int[N][N];
 			visited = new boolean[N][N];
+			int maxNum = 0;
 			for(int i = 0; i < N; i++) {
 				StringTokenizer st = new StringTokenizer(br.readLine());
 				for (int j = 0; j < N; j++) {
 					map[i][j] = Integer.parseInt(st.nextToken());
+					maxNum = Math.max(maxNum, map[i][j]);
 				}
 			}
 			
-			
 			int maxCount = 1;
-			for (int x = 1; x < 100; x++) {
+			for (int x = 1; x < maxNum+1; x++) {
 				int count = 0;
 				for (int i = 0; i < N; i++) {
 					for (int j = 0; j < N; j++) {
