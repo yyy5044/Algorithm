@@ -41,12 +41,13 @@ public class Solution {
 				
 				while(!dq.isEmpty()) {
 					int cur = dq.pollFirst();
-					for (int next : adj[cur]) {
-						if (!visited[next]) {
-							visited[next] = true;
-							dq.add(next);
-							count++;
-						}
+					
+					for (int j = 0; j < adj[cur].size(); j++) {
+						int next = adj[cur].get(j);
+						if (visited[next]) continue;
+						visited[next] = true;
+						dq.add(next);
+						count++;
 					}
 				}
 				
@@ -56,12 +57,13 @@ public class Solution {
 				
 				while(!dq.isEmpty()) {
 					int cur = dq.pollFirst();
-					for (int next : revAdj[cur]) {
-						if (!visited[next]) {
-							visited[next] = true;
-							dq.add(next);
-							count++;
-						}
+					
+					for (int j = 0; j < revAdj[cur].size(); j++) {
+						int next = revAdj[cur].get(j);
+						if(visited[next]) continue;
+						visited[next] = true;
+						dq.add(next);
+						count++;
 					}
 				}
 				
