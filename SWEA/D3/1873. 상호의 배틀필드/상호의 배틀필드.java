@@ -96,21 +96,13 @@ public class Solution {
 			int nh = h - 1;
 			int nw = w;
 			
-			if (isIn(nh, nw)) {
-				if (map[nh][nw] == '.') { // 평지라면, 위치 이동
-					map[h][w] = '.'; 
-					map[nh][nw] = '^';
-					
-					// 현재 위치 수정
-					cur_pos[0] = nh;
-					cur_pos[1] = nw;
-				} else { // 평지가 아니면, 전차가 바라보는 방향만 수정
-					map[h][w] = '^';
-					
-					// 현재 위치 수정
-					cur_pos[0] = h;
-					cur_pos[1] = w;
-				}
+			if (isIn(nh, nw) && map[nh][nw] == '.') {
+				map[h][w] = '.'; 
+				map[nh][nw] = '^';
+				
+				// 현재 위치 수정
+				cur_pos[0] = nh;
+				cur_pos[1] = nw;
 			} else {
 				map[h][w] = '^';
 				
@@ -122,21 +114,13 @@ public class Solution {
 			int nh = h + 1;
 			int nw = w;
 			
-			if (isIn(nh, nw)) {
-				if (map[nh][nw] == '.') { // 평지라면, 위치 이동
-					map[h][w] = '.'; 
-					map[nh][nw] = 'v';
-					
-					// 현재 위치 수정
-					cur_pos[0] = nh;
-					cur_pos[1] = nw;
-				} else { // 평지가 아니면, 전차가 바라보는 방향만 수정
-					map[h][w] = 'v';
-					
-					// 현재 위치 수정
-					cur_pos[0] = h;
-					cur_pos[1] = w;
-				}
+			if (isIn(nh, nw) && map[nh][nw] == '.') {
+				map[h][w] = '.'; 
+				map[nh][nw] = 'v';
+				
+				// 현재 위치 수정
+				cur_pos[0] = nh;
+				cur_pos[1] = nw;
 			} else {
 				map[h][w] = 'v';
 				
@@ -148,21 +132,13 @@ public class Solution {
 			int nh = h;
 			int nw = w - 1;
 			
-			if (isIn(nh, nw)) {
-				if (map[nh][nw] == '.') { // 평지라면, 위치 이동
-					map[h][w] = '.'; 
-					map[nh][nw] = '<';
-					
-					// 현재 위치 수정
-					cur_pos[0] = nh;
-					cur_pos[1] = nw;
-				} else { // 평지가 아니면, 전차가 바라보는 방향만 수정
-					map[h][w] = '<';
-					
-					// 현재 위치 수정
-					cur_pos[0] = h;
-					cur_pos[1] = w;
-				}
+			if (isIn(nh, nw) && map[nh][nw] == '.') {
+				map[h][w] = '.'; 
+				map[nh][nw] = '<';
+				
+				// 현재 위치 수정
+				cur_pos[0] = nh;
+				cur_pos[1] = nw;
 			} else { // 평지가 아니면, 전차가 바라보는 방향만 수정
 				map[h][w] = '<';
 				
@@ -173,21 +149,13 @@ public class Solution {
 		} else if (c == 'R') {
 			int nh = h;
 			int nw = w + 1;
-			if (isIn(nh, nw)) {
-				if (map[nh][nw] == '.') { // 평지라면, 위치 이동
-					map[h][w] = '.'; 
-					map[nh][nw] = '>';
-					
-					// 현재 위치 수정
-					cur_pos[0] = nh;
-					cur_pos[1] = nw;
-				} else { // 평지가 아니면, 전차가 바라보는 방향만 수정
-					map[h][w] = '>';
-					
-					// 현재 위치 수정
-					cur_pos[0] = h;
-					cur_pos[1] = w;
-				}
+			if (isIn(nh, nw) && map[nh][nw] == '.') {
+				map[h][w] = '.'; 
+				map[nh][nw] = '>';
+				
+				// 현재 위치 수정
+				cur_pos[0] = nh;
+				cur_pos[1] = nw;
 			} else { // 평지가 아니면, 전차가 바라보는 방향만 수정
 				map[h][w] = '>';
 				
