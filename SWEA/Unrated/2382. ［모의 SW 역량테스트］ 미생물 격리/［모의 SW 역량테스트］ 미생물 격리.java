@@ -18,7 +18,7 @@ public class Solution {
 			
 			map = new int[N][N]; // 초기 맵
 			
-			ArrayDeque<미생물> dq = new ArrayDeque<>(); // 미생물 큐
+			ArrayDeque<Microb> dq = new ArrayDeque<>(); // 미생물 큐
 			
 			for (int i = 0; i < K; i++) {
 				st = new StringTokenizer(br.readLine());
@@ -28,16 +28,16 @@ public class Solution {
 				int d = Integer.parseInt(st.nextToken());
 				
 				map[r][c] = num; // 맵에 미생물 그리기
-				dq.addLast(new 미생물(r, c, num, d)); // 큐에 미생물 넣기
+				dq.addLast(new Microb(r, c, num, d)); // 큐에 미생물 넣기
 			}
 
-			int 남은_미생물 = 0;
+			int total_microbs = 0;
 			for (int time = 0; time < M; time++) {
 				int step = dq.size(); // 현재 큐에 있는 애들이 다 처리되면 1시간이 지남
 				int[][][] temp = new int[N][N][3]; // [0]: 미생물 수, [1]: 가장 큰 군집, [2]: 우세 군집의 이동방향
 				
 				for (int i = 0; i < step; i++) {
-					미생물 cur = dq.pollFirst();
+					Microb cur = dq.pollFirst();
 					int r = cur.r;
 					int c = cur.c;
 					int num = cur.num;
@@ -70,21 +70,21 @@ public class Solution {
 				for (int y = 0; y < N; y++) {
 					for (int x = 0; x < N; x++) {
 						if (temp[y][x][0] > 0) {
-							dq.addLast(new 미생물(y, x, temp[y][x][0], temp[y][x][2]));
+							dq.addLast(new Microb(y, x, temp[y][x][0], temp[y][x][2]));
 						}
 					}
 				}
 				
 				if (time == M-1) { // 마지막에 큐에 남은 미생물 수를 다 더하기
 					while(!dq.isEmpty()) {
-						미생물 cur = dq.pollFirst();
-						남은_미생물 += cur.num;
+						Microb cur = dq.pollFirst();
+						total_microbs += cur.num;
 					}
 				}
 			}
 			
 			sb.append("#").append(t).append(" ")
-				.append(남은_미생물).append("\n");
+				.append(total_microbs).append("\n");
 		}
 		
 		System.out.println(sb);
@@ -92,9 +92,9 @@ public class Solution {
 	
 }
 
-class 미생물 {
+class Microb {
 	int r, c, num, d;
-	public 미생물(int r, int c, int num, int d) {
+	public Microb(int r, int c, int num, int d) {
 		this.r = r;
 		this.c = c;
 		this.num = num;
