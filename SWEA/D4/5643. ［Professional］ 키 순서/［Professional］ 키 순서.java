@@ -53,7 +53,7 @@ public class Solution {
 				}
 				
 				Arrays.fill(visited, false);
-				dq.clear();
+				visited[start] = true;
 				dq.addLast(start);
 				
 				while(!dq.isEmpty()) {
