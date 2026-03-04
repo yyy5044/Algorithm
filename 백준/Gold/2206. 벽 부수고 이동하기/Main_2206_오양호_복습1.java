@@ -2,75 +2,67 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-	static int N, M; // rows, columns
 	static int[] dr = {-1,1,0,0}, dc = {0,0,-1,1};
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		N = Integer.parseInt(st.nextToken()); // 행 개수 rows
-		M = Integer.parseInt(st.nextToken()); // 열 개수 columns
-		int[][] map = new int[N][M]; // 맵
+		int R = Integer.parseInt(st.nextToken()); // 세로
+		int C = Integer.parseInt(st.nextToken()); // 가로
 		
-		ArrayList<int[]> walls = new ArrayList<int[]>(); // 벽 위치 저장 리스트
-		
-		for (int i = 0; i < N; i++) {
+		char[][] map = new char[R][C];
+		for (int r = 0; r < R; r++) {
 			String line = br.readLine();
-			for (int j = 0; j < M; j++) {
-				map[i][j] = line.charAt(j) - '0';
-				if (map[i][j] == 1) {
-					walls.add(new int[] {i, j});
-				}
+			for (int c = 0; c < C; c++) {
+				map[r][c] = line.charAt(c);
 			}
 		}
 		
-		int ans = bfs(map, new int[]{0,0});
+		boolean[][][] visited = new boolean[R][C][2]; // [0]: 벽 안 부숨, [1]: 벽 부숨
 		
-		System.out.println(ans);
-	}
-	
-	private static int bfs(int[][] map, int[] pos) {
+		ArrayDeque<int[]> dq = new ArrayDeque<>();
+		visited[0][0][0] = true; // 출발점: (0,0), 벽 안 부순 상태: 0, 경로: 1 (자기자신 포함)
+		dq.add(new int[] {0,0,0,1}); // r, c, state, cnt
 		
-		// [0]: 벽 안 부숨, [1]: 벽 부숨
-		boolean[][][] visited = new boolean[N][M][2];
-		
-		ArrayDeque<int[]> dq = new ArrayDeque<int[]>();
-		visited[pos[0]][pos[1]][0] = true;
-		dq.add(new int[] {pos[0], pos[1], 1, 0});
-		
-		while(!dq.isEmpty()) {
+		int ans = -1;
+		while (!dq.isEmpty()) {
 			int[] cur = dq.poll();
 			int r = cur[0];
 			int c = cur[1];
-			int cnt = cur[2];
-			int state = cur[3];
+			int state = cur[2];
+			int cnt = cur[3];
 			
-			if (r == (N-1) && c == (M-1)) { // 도착하면
-				return cnt; // 경로 반환
+			if (r == R-1 && c == C-1) { // 도착하면
+				ans = cnt;
+				break;
 			}
 			
 			for (int d = 0; d < 4; d++) {
 				int nr = r + dr[d];
 				int nc = c + dc[d];
+				int nextState = state;
 				
-				if (nr < 0 || nc < 0 || nr > N-1 || nc > M-1) continue;
+				if (nr < 0 || nc < 0 || nr > R-1 || nc > C-1) continue;
 				
-				if (map[nr][nc] == 0) {
+				if (map[nr][nc] == '1' && nextState == 0) { // 다음 위치가 벽이고 벽을 안 부쉈으면
+					nextState = 1; // 벽을 부순 상태로 바꾸고
+					if (!visited[nr][nc][nextState]) {
+						visited[nr][nc][nextState] = true;
+						dq.add(new int[] {nr, nc, nextState, cnt+1});
+					}
+				} else if (map[nr][nc] == '0') {
 					if (!visited[nr][nc][state]) {
 						visited[nr][nc][state] = true;
-						dq.add(new int[] {nr, nc, cnt+1, state});	
-					}
-				} else if (map[nr][nc] == 1) {
-					if (state == 0) {
-						visited[nr][nc][1] = true;
-						dq.add(new int[] {nr, nc, cnt+1, 1});
+						dq.add(new int[] {nr, nc, state, cnt+1});
 					}
 				}
 			}
 		}
 		
-		return -1; // 도착 못 하면 -1 반환
+		System.out.println(ans);
+		
+		
 	}
-
+	
 }
