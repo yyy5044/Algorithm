@@ -8,21 +8,6 @@ public class Solution {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
-
-		
-//		int[][] test = {{1,1,1,1,1,1},
-//						{2,2,3,3,3,4},
-//						{4,3,3,3,2,2},
-//						{2,2,3,2,2,2},
-//						{2,1,1,1,1,2}};
-//		
-//		N = 6; X = 2;
-//		
-//		for (int i = 0; i < test.length; i++) {
-//			System.out.println(isValid(test[i]));
-//		}
-		
-
 		
 		int T = Integer.parseInt(br.readLine());
 		for(int t = 1; t <= T; t++) {
