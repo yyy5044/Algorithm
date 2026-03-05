@@ -1,72 +1,71 @@
-import java.util.*;
 import java.io.*;
-
-class Ingredient{
-	public int score;
-	public int kcal;
-	public Ingredient(int score, int kcal) {
-		super();
-		this.score = score;
-		this.kcal = kcal;
-	}
-}
+import java.util.*;
 
 public class Solution {
-	static int N, L, M;
-	static boolean visited[];
-	static List<Ingredient> ingredients = new ArrayList<Ingredient>();
-	static int[] numbers;
-	static int max = 0;
+	static int N, kcalLimit;
+	static int[][] ings;
+	static boolean[] visited;
+	static int[] comb;
+	static int maxScore = Integer.MIN_VALUE;
 	
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
+
 		int T = Integer.parseInt(br.readLine());
-		
-		for (int t = 0; t < T; t++) {
+		for(int t = 1; t <= T; t++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			N = Integer.parseInt(st.nextToken());
-			L = Integer.parseInt(st.nextToken());
-			visited = new boolean[N];
+			N = Integer.parseInt(st.nextToken()); // 재료 개수
+			kcalLimit = Integer.parseInt(st.nextToken()); // 칼로리 제한
 			
+			ings = new int[N][2]; // [0]: 점수, [1]: 칼로리
+			visited = new boolean[N];
 			for (int i = 0; i < N; i++) {
 				st = new StringTokenizer(br.readLine());
-				int score = Integer.parseInt(st.nextToken());
-				int kcal = Integer.parseInt(st.nextToken());
-				ingredients.add(new Ingredient(score, kcal));
+				ings[i][0] = Integer.parseInt(st.nextToken());
+				ings[i][1] = Integer.parseInt(st.nextToken());
 			}
 			
 			for (int i = 1; i <= N; i++) {
-				M = i;
-				numbers = new int[M];
-				comb(0, 0);
+				int M = i;
+				comb = new int[M];
+				dfs(0, 0, M);
 			}
-
-			sb.append("#").append(t+1).append(" ")
-				.append(max).append("\n");
 			
-			ingredients.clear();
-			max = 0;
+			sb.append("#").append(t).append(" ")
+				.append(maxScore).append("\n");
+			
+			maxScore = Integer.MIN_VALUE;
 		}
 		
 		System.out.println(sb);
 	}
 	
-	public static void comb(int depth, int start) {
-		if (depth == M) {
-			int sumScore = 0, sumKcal = 0;
+	private static void dfs(int depth, int start, int M) {
+		if (depth == M) { // 조합 완성
+			int totalKcal = 0; // 총 칼로리
+			int totalScore = 0; // 총점
 			for (int i = 0; i < M; i++) {
-				sumScore += ingredients.get(numbers[i]).score;
-				sumKcal += ingredients.get(numbers[i]).kcal;
-				if(sumKcal < L && sumScore > max) max = sumScore;
+				int n = comb[i];
+				totalKcal += ings[n][1];
+				totalScore += ings[n][0];
 			}
+			
+			if (kcalLimit >= totalKcal) { // 총 칼로리가 칼로리 제한을 넘지 않을 때만
+				maxScore = Math.max(maxScore, totalScore); // 최고 점수 갱신 시도
+			}
+			
 			return;
 		}
 		
 		for (int i = start; i < N; i++) {
-			numbers[depth] = i;
-			comb(depth+1, i + 1);
+			if (visited[i]) continue;
+			
+			visited[i] = true;
+			comb[depth] = i;
+			dfs(depth+1, i+1, M);
+			visited[i] = false;
 		}
 	}
-
 }
+
