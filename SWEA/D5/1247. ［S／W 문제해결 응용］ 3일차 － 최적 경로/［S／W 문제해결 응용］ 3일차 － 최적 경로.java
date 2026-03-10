@@ -39,12 +39,20 @@ public class Solution {
 			
 			int minPath = Integer.MAX_VALUE;
 			do {
+				boolean flag = false;
 				int sum = Math.abs(start[0] - customers[index[0]][0]) 
 							+ Math.abs(start[1] - customers[index[0]][1]); // 출발-첫고객 더하고 시작
 				for (int i = 0; i < N-1; i++) {
 					sum += Math.abs(customers[index[i]][0] - customers[index[i+1]][0])
 							+ Math.abs(customers[index[i]][1] - customers[index[i+1]][1]);
+					
+					if (sum > minPath) {
+						flag = true;
+						break;
+					}
 				}
+				
+				if (flag) continue;
 				
 				sum += Math.abs(end[0] - customers[index[N-1]][0]) // 마지막 고객-집
 						+ Math.abs(end[1] - customers[index[N-1]][1]);
