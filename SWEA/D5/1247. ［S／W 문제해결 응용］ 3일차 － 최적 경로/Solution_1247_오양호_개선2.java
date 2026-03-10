@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Solution {
-	static int[][] dp;
+	static int[][] memo;
 	static int N;
 	static int[] start, end;
 	static int[][] customers;
@@ -18,7 +18,7 @@ public class Solution {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			start = new int[2];
 			end = new int[2];
-			dp = new int[11][11];
+			memo = new int[11][11];
 			
 			// 시작 위치: 회사
 			start[0] = Integer.parseInt(st.nextToken());
@@ -69,10 +69,10 @@ public class Solution {
 	}
 	
 	private static int calPath(int c1, int c2) {
-		if (dp[c1][c2] != 0) return dp[c1][c2];
+		if (memo[c1][c2] != 0) return memo[c1][c2];
 		
 		int result = Math.abs(customers[c1][0] - customers[c2][0]) + Math.abs(customers[c1][1] - customers[c2][1]);
-		dp[c1][c2] = result;
+		memo[c1][c2] = result;
 		
 		return result;
 	}
