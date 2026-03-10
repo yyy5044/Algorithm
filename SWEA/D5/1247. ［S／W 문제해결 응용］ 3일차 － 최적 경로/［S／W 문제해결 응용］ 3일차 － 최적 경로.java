@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Solution {
+	static int[][] dp;
 	static int N;
 	static int[] start, end;
 	static int[][] customers;
@@ -17,6 +18,7 @@ public class Solution {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			start = new int[2];
 			end = new int[2];
+			dp = new int[11][11];
 			
 			// 시작 위치: 회사
 			start[0] = Integer.parseInt(st.nextToken());
@@ -41,12 +43,11 @@ public class Solution {
 			do {
 				boolean flag = false;
 				int sum = Math.abs(start[0] - customers[index[0]][0]) 
-							+ Math.abs(start[1] - customers[index[0]][1]); // 출발-첫고객 더하고 시작
+                        + Math.abs(start[1] - customers[index[0]][1]); // 출발-첫고객 더하고 시작
 				for (int i = 0; i < N-1; i++) {
-					sum += Math.abs(customers[index[i]][0] - customers[index[i+1]][0])
-							+ Math.abs(customers[index[i]][1] - customers[index[i+1]][1]);
+					sum += calPath(index[i], index[i+1]);
 					
-					if (sum > minPath) {
+					if (sum > minPath) { // 가지치기
 						flag = true;
 						break;
 					}
@@ -55,7 +56,7 @@ public class Solution {
 				if (flag) continue;
 				
 				sum += Math.abs(end[0] - customers[index[N-1]][0]) // 마지막 고객-집
-						+ Math.abs(end[1] - customers[index[N-1]][1]);
+                        + Math.abs(end[1] - customers[index[N-1]][1]);
 				
 				minPath = Math.min(minPath, sum);
 			}while (np());
@@ -65,6 +66,15 @@ public class Solution {
 		}
 		
 		System.out.println(sb);
+	}
+	
+	private static int calPath(int c1, int c2) {
+		if (dp[c1][c2] != 0) return dp[c1][c2];
+		
+		int result = Math.abs(customers[c1][0] - customers[c2][0]) + Math.abs(customers[c1][1] - customers[c2][1]);
+		dp[c1][c2] = result;
+		
+		return result;
 	}
 	
 	private static boolean np() {
