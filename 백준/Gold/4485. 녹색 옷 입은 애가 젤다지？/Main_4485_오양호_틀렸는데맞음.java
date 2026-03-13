@@ -17,6 +17,7 @@ public class Main {
 			if (N==0) break;
 			
 			int[][] map = new int[N][N]; // 격자 그래프
+			boolean[][] visited = new boolean[N][N];
 			int[][] minDist = new int[N][N];
 			PriorityQueue<int[]> pq = new PriorityQueue<>((e1, e2) -> {
 				return Integer.compare(e1[2], e2[2]);
@@ -31,6 +32,7 @@ public class Main {
 			
 			minDist[0][0] = map[0][0];
 			
+			visited[0][0] = true;
 			pq.add(new int[] {0,0, minDist[0][0]});
 			
 			while(!pq.isEmpty()) {
@@ -39,16 +41,15 @@ public class Main {
 				int c = cur[1];
 				int min = cur[2];
 				
-				if (min > minDist[r][c]) continue;
-				
 				for (int d = 0; d < 4; d++) {
 					int nr = r + dr[d];
 					int nc = c + dc[d];
 					
-					if (nr < 0 || nc < 0 || nr > N-1 || nc > N-1) continue;
+					if (nr < 0 || nc < 0 || nr > N-1 || nc > N-1 || visited[nr][nc]) continue;
 					
 					if (minDist[nr][nc] > min + map[nr][nc]) {
 						minDist[nr][nc] = min + map[nr][nc];
+						visited[nr][nc] = true;
 						pq.add(new int[] {nr, nc, minDist[nr][nc]});
 					}
 				}
