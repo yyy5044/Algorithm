@@ -1,0 +1,3 @@
+select ANIMAL_ID, NAME, DATE(DATETIME) as 날짜
+from ANIMAL_INS
+order by ANIMAL_ID;
