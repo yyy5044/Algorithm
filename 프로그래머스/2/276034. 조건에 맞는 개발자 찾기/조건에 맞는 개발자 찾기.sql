@@ -1,11 +1,5 @@
--- 개발자의 ID, 이메일, 이름, 성
-
-select d.ID, d.EMAIL, FIRST_NAME, LAST_NAME
+select distinct d.ID, d.EMAIL, d.FIRST_NAME, d.LAST_NAME
 from DEVELOPERS d
-where exists(
-                select CODE
-                from SKILLCODES s
-                where name IN('Python', 'C#') AND d.SKILL_CODE & s.CODE > 0
-            )
+join SKILLCODES s on (s.CODE & d.SKILL_CODE) > 0
+where s.NAME in ('Python', 'C#')
 order by d.ID;
-
