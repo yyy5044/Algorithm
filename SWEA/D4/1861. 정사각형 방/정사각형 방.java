@@ -1,77 +1,74 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
 public class Solution {
-	static int[] dr = {-1,1,0,0};
-	static int[] dc = {0,0,-1,1};
-	
-	public static void main(String[] args) throws Exception {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
+    static int[] dr = {-1,1,0,0};
+    static int[] dc = {0,0,-1,1};
+    static HashMap<Integer, Integer> memo = new HashMap<>();
 
-		int T = Integer.parseInt(br.readLine());
-		for (int t = 1; t <= T; t++) {
-			int n = Integer.parseInt(br.readLine());
-			int[][] map = new int[n][n];
-			
-			for (int i = 0; i < n; i++) {
-				StringTokenizer st = new StringTokenizer(br.readLine());
-				for (int j = 0; j < n; j++) {
-					map[i][j] = Integer.parseInt(st.nextToken());
-				}
-			}
-			
-			
-			int max = Integer.MIN_VALUE;
-			int number = Integer.MAX_VALUE;
-			
-			for (int i = 0; i < n; i++) {
-				for (int j = 0; j < n; j++) {
-					int r = i;
-					int c = j;
-					int count = 1;
-					
-					while(true) {
-						boolean go = false;
-						
-						for (int d = 0; d < 4; d++) {
-							int nr = r + dr[d];
-							int nc = c + dc[d];
-							
-							if (nr < 0 || nc < 0 || nr > n-1 || nc > n-1) continue;
-							
-							if (map[r][c] + 1 == map[nr][nc]) {
-								r = nr;
-								c = nc;
-								go = true;
-								break;
-							}
-						}
-						
-						if (!go) break;
-						
-						count++;
-					}
-					
-					if (max == count && number > map[i][j]) {
-						number = map[i][j];
-					}
-					
-					if (max < count) {
-						max = count;
-						number = map[i][j];
-					}
-					
-				}
-			}
-			
-			sb.append("#").append(t).append(" ");
-			sb.append(number).append(" ").append(max);
-			sb.append("\n");
-		
-		}
-		System.out.println(sb);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
-	}
-	
+        int T = Integer.parseInt(br.readLine());
+
+        for (int t = 1; t <= T; t++){
+            memo.clear();
+            int n = Integer.parseInt(br.readLine());
+            int[][] map = new int[n][n];
+
+            for (int i = 0; i < n; i++) {
+                StringTokenizer st = new StringTokenizer(br.readLine());
+                for (int j = 0; j < n; j++) {
+                    map[i][j] = Integer.parseInt(st.nextToken());
+                }
+            }
+
+            int max = Integer.MIN_VALUE;
+            int number = Integer.MAX_VALUE;
+
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    int result = dfs(n, i, j, map);
+
+                    if (max == result && number > map[i][j]) {
+                        number = map[i][j];
+                    }
+                    if (max < result) {
+                        max = result;
+                        number = map[i][j];
+                    }
+                }
+            }
+
+            sb.append("#").append(t).append(" ");
+            sb.append(number).append(" ").append(max);
+            sb.append("\n");
+        }
+
+        System.out.println(sb);
+    }
+
+    static int dfs(int n, int r, int c, int[][] map) {
+
+        if (memo.containsKey(map[r][c])) {
+            return memo.get(map[r][c]);
+        }
+
+        int best = 1;
+
+        for (int d = 0; d < 4; d++) {
+            int nr = r + dr[d];
+            int nc = c + dc[d];
+
+            if (nr < 0 || nc < 0 || nr > n - 1 || nc > n - 1) continue;
+
+            if (map[r][c] + 1 == map[nr][nc]) {
+                best = best + dfs(n, nr, nc, map);
+            }
+        }
+
+        memo.put(map[r][c], best);
+        return best;
+    }
 }
