@@ -7,20 +7,22 @@ public class Solution {
     static HashMap<Integer, Integer> memo = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StreamTokenizer st = new StreamTokenizer(new BufferedReader(new InputStreamReader(System.in)));
         StringBuilder sb = new StringBuilder();
 
-        int T = Integer.parseInt(br.readLine());
+        st.nextToken();
+        int T = (int) st.nval;
 
         for (int t = 1; t <= T; t++){
             memo.clear();
-            int n = Integer.parseInt(br.readLine());
+            st.nextToken();
+            int n = (int) st.nval;
             int[][] map = new int[n][n];
 
             for (int i = 0; i < n; i++) {
-                StringTokenizer st = new StringTokenizer(br.readLine());
                 for (int j = 0; j < n; j++) {
-                    map[i][j] = Integer.parseInt(st.nextToken());
+                    st.nextToken();
+                    map[i][j] = (int) st.nval;
                 }
             }
 
