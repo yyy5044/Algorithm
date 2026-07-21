@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Solution {
+    static int N;
     static int[][] positions;
     static boolean[] group;
     static long min;
@@ -12,18 +13,18 @@ public class Solution {
 
         int T = Integer.parseInt(br.readLine());
         for (int t = 1; t <= T; t++) {
-            int n = Integer.parseInt(br.readLine());
-            positions = new int[n][2];
-            group = new boolean[n];
+            N = Integer.parseInt(br.readLine());
+            positions = new int[N][2];
+            group = new boolean[N];
             min = Long.MAX_VALUE;
 
-            for (int i = 0; i < n; i++) {
+            for (int i = 0; i < N; i++) {
                 StringTokenizer st = new StringTokenizer(br.readLine());
                 positions[i][0] = Integer.parseInt(st.nextToken());
                 positions[i][1] = Integer.parseInt(st.nextToken());
             }
 
-            dfs(n, 0, 0);
+            dfs(0, 0);
 
             sb.append("#").append(t).append(" ");
             sb.append(min).append("\n");
@@ -32,36 +33,30 @@ public class Solution {
         System.out.println(sb);
     }
 
-    static void dfs(int n, int depth, int start) {
-        if (depth == n/2) {
-            long plusGroupX = 0;
-            long plusGroupY = 0;
-            long minusGroupX = 0;
-            long minusGroupY = 0;
-            long sum = 0;
-
-            for (int i = 0; i < n; i++) {
+    static void dfs(int depth, int start) {
+        if (depth == N/2) {
+            long sumX = 0;
+            long sumY = 0;
+            for (int i = 0; i < N; i++) {
                 if (group[i]) {
-                    plusGroupX += positions[i][0];
-                    plusGroupY += positions[i][1];
+                    sumX += positions[i][0];
+                    sumY += positions[i][1];
                 } else {
-                    minusGroupX += positions[i][0];
-                    minusGroupY += positions[i][1];
+                    sumX -= positions[i][0];
+                    sumY -= positions[i][1];
                 }
-
-                long tmpX = plusGroupX - minusGroupX;
-                long tmpY = plusGroupY - minusGroupY;
-
-                sum = tmpX*tmpX + tmpY*tmpY;
-
             }
-            min = Math.min(min, sum);
+
+            long vector = sumX*sumX + sumY*sumY;
+
+            min = Math.min(min, vector);
+
             return;
         }
 
-        for (int i = start; i < n; i++) {
+        for (int i = start; i < N; i++) {
             group[i] = true;
-            dfs(n, depth+1, i+1);
+            dfs(depth+1, i+1);
             group[i] = false;
         }
     }
