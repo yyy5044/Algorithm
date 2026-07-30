@@ -1,14 +1,12 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 class Solution {
     public boolean solution(String[] phone_book) {
-        HashSet<String> set = new HashSet<>(Arrays.asList(phone_book));
+        Arrays.sort(phone_book);
         
-        for (String p : phone_book) {
-            for (int i = 0; i < p.length(); i++) {
-                if (set.contains(p.substring(0, i))) return false;
-            }
+        for (int i = 0; i < phone_book.length - 1; i++) {
+            if (phone_book[i+1].startsWith(phone_book[i])) return false;
         }
         
         return true;
