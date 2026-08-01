@@ -1,18 +1,20 @@
 import java.io.*;
 import java.util.*;
 
+//    0 1 2
+// 0| 1 1 0
+// 1| 1 1 0
+// 2| 0 0 1
+
 class Solution {
-    static int N;
     static boolean[] visited;
-    
     public int solution(int n, int[][] computers) {
-        N = n;
-        visited = new boolean[N];
+        visited = new boolean[n];
         
         int ans = 0;
-        for (int i = 0; i < N; i++) {
+        for (int i = 0; i < n; i++) {
             if (!visited[i]) {
-                bfs(i, computers);
+                bfs(i, n, computers);
                 ans++;
             }
         }
@@ -20,27 +22,21 @@ class Solution {
         return ans;
     }
     
-    //    0 1 2
-    // 0| 1 1 0
-    // 1| 1 1 0
-    // 2| 0 0 1
-    
-    static void bfs(int startCom, int[][] computers) {
+    static void bfs(int start, int n, int[][] computers) {
         Deque<Integer> q = new ArrayDeque<>();
-        visited[startCom] = true;
-        q.addLast(startCom);
+        visited[start] = true;
+        q.add(start);
         
         while (!q.isEmpty()) {
-            int computer = q.pollFirst();
+            int cur = q.poll();
             
-            for (int i = 0; i < N; i++) {
-                if (i == computer) continue; // 자기자신은 스킵
-                
-                if (!visited[i] && computers[computer][i] == 1) {
+            for (int i = 0; i < n; i++) {
+                if (!visited[i] && computers[cur][i] == 1) {
                     visited[i] = true;
-                    q.addLast(i);
+                    q.add(i);
                 }
             }
+ 
         }
     }
 }
