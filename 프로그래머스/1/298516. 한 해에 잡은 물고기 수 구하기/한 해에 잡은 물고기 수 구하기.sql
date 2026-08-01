@@ -1,4 +1,5 @@
--- 코드를 작성해주세요
-SELECT COUNT(*) AS FISH_COUNT
-FROM FISH_INFO
-WHERE TIME LIKE '2021%';
+-- FISH_INFO: 잡은 물고기들의 정보
+select COUNT(*) AS FISH_COUNT
+from FISH_INFO
+where TIME >= '2021-01-01' AND TIME < '2022-01-01';
+
