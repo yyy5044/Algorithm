@@ -2,42 +2,43 @@ import java.io.*;
 import java.util.*;
 
 class Solution {
-    static char[] nums;
+    static boolean[] visited;
+    static char[] arr;
     static Set<Integer> set;
     
     public int solution(String numbers) {
-        set = new HashSet<>();
-        nums = new char[numbers.length()];
+        visited = new boolean[numbers.length()];
+        arr = new char[numbers.length()];
         for (int i = 0; i < numbers.length(); i++) {
-            nums[i] = numbers.charAt(i);
+            arr[i] = numbers.charAt(i);
         }
+        set = new HashSet<>();
         
-        for (int n = 1; n <= numbers.length(); n++) {
-            boolean[] visited = new boolean[numbers.length()];
-            dfs(0, n, visited, "");
+        for (int i = 1; i <= numbers.length(); i++) {
+            dfs(0, "", i);
         }
         
         return set.size();
     }
     
-    static void dfs(int depth, int n, boolean[] visited, String b) {
+    static void dfs(int depth, String str, int n) {
         if (depth == n) {
-            int number = Integer.parseInt(b);
+            int num = Integer.parseInt(str);
             
-            if (number < 2) return;
+            if (num == 0 || num == 1) return;
             
-            for (int i = 2; (long) i*i <= number; i++) {
-                if (number % i == 0) return;
+            for (int i = 2; i*i <= num; i++) {
+                if (num % i == 0) return;
             }
             
-            set.add(number);
+            set.add(num);
             return;
         }
         
-        for (int i = 0; i < nums.length; i++) {
-            if (!visited[i]) {
+        for (int i = 0; i < arr.length; i++) {
+            if(!visited[i]) {
                 visited[i] = true;
-                dfs(depth+1, n, visited, b+nums[i]);
+                dfs(depth+1, str+arr[i], n);
                 visited[i] = false;
             }
         }
