@@ -3,17 +3,21 @@ import java.util.*;
 
 class Solution {
     public int solution(int[][] sizes) {
-        int maxLong = Integer.MIN_VALUE;
-        int maxShort = Integer.MIN_VALUE;
-        for (int i = 0; i < sizes.length; i++) {
+        int n = sizes.length;
+        
+        int a = 0;
+        int b = 0;
+        int l = 0;
+        int s = Integer.MAX_VALUE;
+        
+        for (int i = 0; i < n; i++) {
+            l = Math.max(sizes[i][0], sizes[i][1]);
+            s = Math.min(sizes[i][0], sizes[i][1]);
             
-            int lo = Math.max(sizes[i][0], sizes[i][1]);
-            int sh = Math.min(sizes[i][0], sizes[i][1]);
-            
-            maxLong = Math.max(maxLong, lo);
-            maxShort = Math.max(maxShort, sh);
+            a = Math.max(l, a);
+            b = Math.max(s, b);
         }
         
-        return maxLong * maxShort;
+        return a*b;
     }
 }
