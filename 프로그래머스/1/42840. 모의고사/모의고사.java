@@ -10,31 +10,34 @@ class Solution {
         };
         
         int[] arr = new int[3];
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < answers.length; j++) {
-                if (patterns[i][j % patterns[i].length] == answers[j]) {
-                    arr[i]++;
-                }
+        for (int i = 0; i < answers.length; i++) {
+            if (answers[i] == patterns[0][i % patterns[0].length]) {
+                arr[0]++;
+            }
+            
+            if (answers[i] == patterns[1][i % patterns[1].length]) {
+                arr[1]++;
+            }
+            
+            if (answers[i] == patterns[2][i % patterns[2].length]) {
+                arr[2]++;
             }
         }
         
-        System.out.println(Arrays.toString(arr));
         int max = Math.max(arr[0], Math.max(arr[1], arr[2]));
-        System.out.println(max);
         
-        List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            if (arr[i] == max) {
-                result.add(i+1);
+        ArrayList<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < arr.length; i++) {
+            if (max == arr[i]) {
+                ans.add(i+1);
             }
         }
         
-        int[] ans = new int[result.size()];
-        for (int i = 0; i < result.size(); i++) {
-            ans[i] = result.get(i);
+        int[] result = new int[ans.size()];
+        for (int i = 0; i < ans.size(); i++) {
+            result[i] = ans.get(i);
         }
-    
         
-        return ans;
+        return result;
     }
 }
