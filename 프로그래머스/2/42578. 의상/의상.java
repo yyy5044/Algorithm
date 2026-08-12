@@ -3,18 +3,19 @@ import java.util.*;
 
 class Solution {
     public int solution(String[][] clothes) {
-        HashMap<String, Integer> map = new HashMap<>();
+        Map<String, Integer> map = new HashMap<>();
         
-        for (String[] c : clothes) {
-            map.put(c[1], map.getOrDefault(c[1], 0) + 1);
+        for (int i = 0; i < clothes.length; i++) {
+            String category = clothes[i][1];
+        
+            map.put(category, map.getOrDefault(category, 0) + 1);
         }
         
         int ans = 1;
-        for (int n : map.values()) {
-            ans *= n + 1;
+        for (int i : map.values()){
+            ans *= i + 1;
         }
-        ans -= 1;
         
-        return ans;
+        return ans - 1;
     }
 }
