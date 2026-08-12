@@ -1,11 +1,13 @@
 -- FISH_INFO: 잡은 물고기들의 정보
 -- FISH_NAME_INFO: 물고기의 이름에 대한 정보
-select ID, FISH_NAME, LENGTH
-from FISH_INFO F
-join FISH_NAME_INFO I
-using (FISH_TYPE)
-where (FISH_TYPE, LENGTH) in (
-                select FISH_TYPE, MAX(LENGTH)
-                from FISH_INFO
-                group by FISH_TYPE
-                );
+
+SELECT I.ID AS ID, N.FISH_NAME AS FISH_NAME, I.LENGTH AS LENGTH
+FROM FISH_INFO I
+JOIN FISH_NAME_INFO N USING (FISH_TYPE)
+WHERE (FISH_TYPE, LENGTH) IN (
+    SELECT FISH_TYPE, MAX(LENGTH)
+    FROM FISH_INFO
+    GROUP BY FISH_TYPE
+)
+ORDER BY ID;
+
