@@ -4,14 +4,13 @@ import java.util.*;
 class Solution {
     public boolean solution(String[] phone_book) {
         Set<String> set = new HashSet<>();
-        
-        for (int i = 0; i < phone_book.length; i++) {
-            set.add(phone_book[i]);
+        for (String phoneNumber : phone_book) {
+            set.add(phoneNumber);
         }
         
-        for (int i = 0; i < phone_book.length; i++) {
-            for (int j = 1; j < phone_book[i].length(); j++) {
-                if (set.contains(phone_book[i].substring(0,j))){
+        for (String phoneNumber : phone_book) {
+            for (int i = 1; i < phoneNumber.length(); i++) {
+                if (set.contains(phoneNumber.substring(0, i))) {
                     return false;
                 }
             }
