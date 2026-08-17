@@ -6,14 +6,12 @@ class Solution {
         Map<String, Integer> map = new HashMap<>();
         
         for (int i = 0; i < clothes.length; i++) {
-            String category = clothes[i][1];
-        
-            map.put(category, map.getOrDefault(category, 0) + 1);
+            map.put(clothes[i][1], map.getOrDefault(clothes[i][1], 0) + 1);
         }
         
         int ans = 1;
-        for (int i : map.values()){
-            ans *= i + 1;
+        for (int count : map.values()) {
+            ans *= count + 1;
         }
         
         return ans - 1;
