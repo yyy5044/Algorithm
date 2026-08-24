@@ -1,72 +1,64 @@
 import java.io.*;
 import java.util.*;
 
-// )))(((()
-// u = )))(((, v = ()
-//
-
 class Solution {
     public String solution(String p) {
-        String answer = dfs(p);
-
-        return answer;
+        
+        String ans = dfs(p);
+        
+        return ans;
     }
     
-    static String dfs(String p) {
-        if (p.equals("")) return p;
+    static String dfs(String str) {
+        if (str.equals("")) return str;
         
-        int cut = cutIdx(p);
+        int idx = splitIdx(str);
+        String u = str.substring(0, idx+1);
+        String v = str.substring(idx+1);
         
-        String u = p.substring(0, cut);
-        String v = p.substring(cut);
-        
-        System.out.println("u: " + u + ", v: "+ v);
+        // System.out.println(u + ", " + v);
         
         if (isCorrect(u)) {
             return u + dfs(v);
         } else {
-            return "(" + dfs(v) + ")" + inverse(u.substring(1, u.length()-1));
-        }
-    }
-    
-    static String inverse(String p) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < p.length(); i++) {
-            if (p.charAt(i) == '(') {
-                sb.append(')');
-            } else {
-                sb.append('(');
-            }
+            return "(" + dfs(v) + ")" + inverse(u.substring(1,u.length()-1));
         }
         
+    }
+    
+    static String inverse(String str) {
+        int n = str.length();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            if (str.charAt(i) == '(') sb.append(')');
+            else sb.append('(');
+        }
         return sb.toString();
     }
     
-    static boolean isCorrect(String p) {
+    static int splitIdx(String str) {
+        int n = str.length();
         int sum = 0;
-        for (int i = 0; i < p.length(); i++) {
-            if (p.charAt(i) == '(') sum += 1;
-            else if (p.charAt(i) == ')') sum -= 1;
+        for (int i = 0; i < n; i++) {
+            if (str.charAt(i) == '(') sum++;
+            else sum--;
+            
+            if (sum == 0) return i;
+        }
+        
+        return n-1;
+    }
+    
+    static boolean isCorrect(String str) {
+        int n = str.length();
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            if (str.charAt(i) == '(') sum++;
+            else sum--;
             
             if (sum < 0) return false;
         }
         
         return true;
-    }
-    
-    static int cutIdx(String p) {
-        int sum = 0;
-        int idx = 0;
-        for (int i = 0; i < p.length(); i++) {
-            if (p.charAt(i) == '(') sum += 1;
-            else if (p.charAt(i) == ')') sum -= 1;
-            
-            if (sum == 0) {
-                idx = i;
-                break;
-            }
-        }
-        
-        return idx+1;
     }
 }
