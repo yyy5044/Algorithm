@@ -1,71 +1,57 @@
 import java.io.*;
 import java.util.*;
 
-// 숙련도: level -> 퍼즐 틀리는 횟수 변화
-// 현재 퍼즐의 난이도: diff
-// 현재 퍼즐의 소요 시간: time_cur
-// 이전 퍼즐의 소요 시간: time_prev
-// if (diff <= level): 난이도가 숙련도 이하면 -> time_cur만큼의 시간으로 해결
-// else: 난이도가 숙련도보다 높으면 -> diff - level번 틀리게 되고, 퍼즐을 틀릴 때마다 time_cur만큼의 시간을 사용 + time_prev만큼의 시간을 써서 이전 퍼즐 다시 풀고 와야 함. 이전 퍼즐 풀 때는 절대 틀리지 않음.
-// diff - level번 틀린 후에는 time_cur만큼 시간 써서 퍼즐 해결.
-
 class Solution {
     public int solution(int[] diffs, int[] times, long limit) {
-        int n = diffs.length; // 문제 개수
-        int max_diff = Integer.MIN_VALUE; // 문제 중 최고 난이도
-        for (int i = 0; i < n; i++) {
-            max_diff = Math.max(max_diff, diffs[i]);
-        }
+        int n = diffs.length; // 퍼즐 개수
+        int maxLevel = 0;
+        for (int d : diffs) maxLevel = Math.max(maxLevel, d);
         
-        int min_level = 1; // 최소 숙련도
+        // System.out.println(maxLevel);
         
-        // 초기값 설정
+        // int ans = 0;
+        // for (int level = 1; level < maxLevel; level++) {
+        //     if (canSolve(n, limit, level, diffs, times)) {
+        //         ans = level;
+        //         break;
+        //     }
+        // }
+        
         int lo = 1;
-        int hi = max_diff;
+        int hi = maxLevel;
         int mid = (lo + hi) / 2;
+        // x x o o o o o
         
         while (true) {
-            if (lo == mid && hi == mid) {
-                min_level = mid;
-                break;
-            }
-            
-            if (!canSolveAll(limit, mid, diffs, times, n)) { // 못 풀면
+            if (canSolve(n, limit, mid, diffs, times)) { // o
+                hi = mid;
+                mid = (lo + hi) / 2;
+            } else { // x
                 lo = mid + 1;
                 mid = (lo + hi) / 2;
-            } else { // 풀면
-                hi = mid;
-                mid = (lo + hi) / 2; // 오른쪽 버리고 mid 다시 계산
             }
+            
+            if (lo == hi) break;
         }
         
-        // x x x x o o o
-        
-        
-        return min_level;
+        return lo;
     }
     
-    static boolean canSolveAll(long limit, int level, int[] diffs, int[] times, int n) {
-        boolean flag = false;    
-        
-        limit = limit - times[0]; // 첫 문제는 푼 시간 차감
-
+    static boolean canSolve(int n, long limit, int level, int[] diffs, int[] times) {
+        limit -= times[0];
         for (int i = 1; i < n; i++) {
-            int diff = diffs[i]; // 현재 퍼즐의 난이도
-            int time_cur = times[i]; // 현재 퍼즐의 소요시간
-            int time_prev = times[i - 1]; // 이전 퍼즐의 소요시간
-
-            if (diff <= level) {
-                limit -= time_cur;
-            } else {
-                limit -= (diff - level)*(time_cur + time_prev) + time_cur;
+            int diff = diffs[i];
+            int time_cur = times[i];
+            int time_prev = times[i-1];
+            
+            if (diff <= level) limit -= time_cur;
+            else {
+                limit -= (diff - level) * (time_cur + time_prev) + time_cur;
             }
         }
         
-        if (limit >= 0) { // 제한시간 내로 다 풀었다면
-            flag = true;
-        }
+        if (limit < 0) return false;
         
-        return flag;
+        return true;
     }
 }
