@@ -2,43 +2,52 @@ import java.io.*;
 import java.util.*;
 
 class Solution {
+    static int N, M;
+    
     public boolean solution(int[][] key, int[][] lock) {
-        int N = lock.length;
-        int M = key.length;
-        // 1. 기준은 열쇠의 왼쪽 끝부분
-        // 2. 평행이동의 범위는 어떻게 되는가?
-        // -(M-1) ~ N-1까지 -> 0 ~ N+M-2
-        // 3. 회전 함수 만들기 -> 회전은 [i][j] = [M-1-j][i]
+        // 1. 열쇠의 왼쪽 끝 기준으로
+        // 2. 회전을 통한 4가지 경우의 수로 시작
+        // 3. 각 경우의 수에서 평행이동 시켜보고 맞으면 true
+        N = lock.length;
+        M = key.length;
         
-        boolean ans = false;
+        // 평행이동 범위: -(M-1) ~ (N-1)
+        // -> 0 ~ N+M-2
+        
         for (int count = 0; count < 4; count++) {
             int[][] rotatedKey = rotation(key, count);
-            for (int r = 0; r < N+M-1; r++) {
-                for (int c = 0; c < N+M-1; c++) {
+            for (int i = 0; i < N+M-1; i++) {
+                for (int j = 0; j < N+M-1; j++) {
                     int[][] padding = new int[N+2*(M-1)][N+2*(M-1)];
-                    // (r,c)가 왼쪽 끝
-                    for (int i = 0; i < M; i++) {
-                        for (int j = 0; j < M; j++) {
-                           padding[r+i][c+j] = rotatedKey[i][j];
+                    for (int r = 0; r < M; r++) {
+                        for (int c = 0; c < M; c++) {
+                            padding[i+r][j+c] = rotatedKey[r][c];
                         }
                     }
                     
-                    // 중앙에 자물쇠 그리기
-                    for (int i = 0; i < N; i++) {
-                        for (int j = 0; j < N; j++) {
-                            padding[M-1+i][M-1+j] += lock[i][j];
+                    for (int r = 0; r < N; r++) {
+                        for (int c = 0; c < N; c++) {
+                            padding[M-1+r][M-1+c] += lock[r][c];
                         }
                     }
                     
-                    // 딱 맞는지 검사
-                    int sum = 0;
-                    for (int i = 0; i < N; i++) {
-                        for (int j = 0; j < N; j++) {
-                            if (padding[M-1+i][M-1+j] == 1) sum++;
+                    boolean result = true;
+                    for (int r = 0; r < N; r++) {
+                        for (int c = 0; c < N; c++) {
+                            if (padding[M-1+r][M-1+c] != 1) {
+                                result = false;
+                                break;
+                            }
                         }
+                        if (!result) break;
                     }
                     
-                    if (sum == N*N) return true;
+                    if (result) return result;
+                    
+                    // for (int r = 0; r < N+2*(M-1); r++) {
+                    //     System.out.println(Arrays.toString(padding[r]));
+                    // }
+                    // System.out.println();
                 }
             }
         }
@@ -46,21 +55,32 @@ class Solution {
         return false;
     }
     
-    static int[][] rotation(int[][] key, int count){
-        int M = key.length;
-        int[][] result = key;
-        int[][] tmp = key;
-        for (int c = 0; c < count; c++) {
-            result = new int[M][M];
-            for (int i = 0; i < M; i++) {
-                for (int j = 0; j < M; j++) {
-                    result[i][j] = tmp[M-1-j][i];
+    static boolean check(int[][] arr) {
+        boolean result = true;
+        
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr.length; j++) {
+                if (arr[i][j] != 1) {
+                    return false;
                 }
             }
-            tmp = result;
         }
         
-        
         return result;
+    }
+    
+    static int[][] rotation(int[][] key, int count) {
+        int[][] cur = key;
+        for (int c = 0; c < count; c++) {
+            int[][] next = new int[M][M];
+            for (int i = 0; i < M; i++) {
+                for (int j = 0; j < M; j++) {
+                    next[i][j] = cur[M-1-j][i];
+                }
+            }
+            cur = next;
+        }
+        
+        return cur;
     }
 }
