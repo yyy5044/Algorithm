@@ -2,37 +2,49 @@ import java.io.*;
 import java.util.*;
 
 class Solution {
+    
     public int[] solution(String[] genres, int[] plays) {
-        Map<String, Integer> genreTotal = new HashMap<>();
-        Map<String, List<int[]>> genreSongs = new HashMap<>();
+        HashMap<String, Integer> genreTotal = new HashMap<>();
+        // 장르별로 묶어서 {i, j}와 같이 정리
+        // 장르별로 한 번 정렬해서 넣고, 그 다음 안에 있는 i, j 정렬
         
         for (int i = 0; i < genres.length; i++) {
-            genreTotal.put(genres[i], genreTotal.getOrDefault(genres[i], 0) + plays[i]);
-            
-            if (!genreSongs.containsKey(genres[i])) {
-                genreSongs.put(genres[i], new ArrayList<int[]>());
-            }
-            genreSongs.get(genres[i]).add(new int[]{plays[i], i});
+            String g = genres[i];
+            if (!genreTotal.containsKey(g)) genreTotal.put(g, 0);
+            genreTotal.put(g, genreTotal.get(g) + plays[i]);
         }
         
-        List<Map.Entry<String, Integer>> entries = new ArrayList<>(genreTotal.entrySet());
-        entries.sort((a, b) -> b.getValue() - a.getValue());
+        HashMap<String, ArrayList<Integer>> songs = new HashMap<>();
+        for (int i = 0; i < genres.length; i++) {
+            String g = genres[i];
+            if (!songs.containsKey(g)) songs.put(g, new ArrayList<>());
+            songs.get(g).add(i);
+        }
         
-        List<Integer> tmp = new ArrayList<>();
-        for (Map.Entry<String, Integer> e : entries) {
-            String genre = e.getKey();
-            genreSongs.get(genre).sort((a, b) -> {
-                if (a[0] != b[0]) return b[0] - a[0];
-                else return a[1] - b[1];
+        for (String g : songs.keySet()) {
+            ArrayList<Integer> tmp = songs.get(g);
+            
+            tmp.sort((a, b) -> {
+                if (plays[b] != plays[a]) return plays[b] - plays[a];
+                else return a - b;
             });
-            
-            for (int i = 0; i < Math.min(2, genreSongs.get(genre).size()); i++) {
-                tmp.add(genreSongs.get(genre).get(i)[1]);
-            }
         }
         
-        int[] ans = new int[tmp.size()];
-        for (int i = 0; i < tmp.size(); i++) ans[i] = tmp.get(i);
+        ArrayList<String> genreRank = new ArrayList<>(genreTotal.keySet());
+        genreRank.sort((a, b) -> genreTotal.get(b) - genreTotal.get(a));
+        
+        ArrayList<Integer> result = new ArrayList<>();
+        for (int i = 0; i < genreRank.size(); i++) {
+            String g = genreRank.get(i);
+            result.add(songs.get(g).get(0));
+            if (songs.get(g).size() > 1)
+            result.add(songs.get(g).get(1));
+        }
+        
+        int[] ans = new int[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            ans[i] = result.get(i);
+        }
         
         return ans;
     }
