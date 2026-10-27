@@ -3,37 +3,30 @@ import java.util.*;
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
         int N = progresses.length;
-        int[] days = new int[N];
-        // 계산식: 100 - 진행도 / 속도
+        Deque<Integer> days = new ArrayDeque<>();
         for (int i = 0; i < N; i++) {
-            days[i] = (100 - progresses[i]) / speeds[i];
-            if ((100 - progresses[i]) % speeds[i] > 0) {
-                days[i] += 1;
-            }
-        }
-        
-        Deque<Integer> dq = new ArrayDeque<>();
-        for (int i = 0; i < N; i++) {
-            dq.add(days[i]);
+            int d = (100 - progresses[i]) / speeds[i];
+            if ((100 - progresses[i]) % speeds[i] > 0) d += 1;
+            days.add(d);
+            System.out.println(d);
         }
         
         ArrayList<Integer> ans = new ArrayList<>();
-        while(!dq.isEmpty()) {
+        
+        while (!days.isEmpty()) {
             int count = 1;
-            int cur = dq.poll();
-            
-            while(dq.peek() != null && dq.peek() <= cur) {
-                dq.poll();
+            int day = days.poll();
+            while (days.peek() != null && days.peek() <= day) {
+                days.poll();
                 count++;
             }
-            
             ans.add(count);
         }
         
         int[] answer = new int[ans.size()];
-        for (int i = 0; i < ans.size(); i++) {
-            answer[i] = ans.get(i);
-        }
+        for (int i = 0; i < ans.size(); i++) answer[i] = ans.get(i);
+        
+        System.out.println(ans);
         
         return answer;
     }
