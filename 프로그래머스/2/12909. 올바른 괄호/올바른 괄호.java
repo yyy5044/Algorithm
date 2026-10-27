@@ -2,17 +2,18 @@ import java.util.*;
 
 class Solution {
     boolean solution(String s) {
-        // '('는 +, ')'는 -
-        int sum = 0;
+        Deque<Integer> dq = new ArrayDeque<>();
         for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') sum += 1;
-            else sum -= 1;
-            
-            if (sum < 0) return false;
+            if (s.charAt(i) == '(') {
+                dq.push(0);
+            } else {
+                if (dq.isEmpty()) return false;
+                dq.pop();
+            }
         }
         
-        if (sum == 0) return true;
-        
-        return false;
+        if (!dq.isEmpty()) return false;;
+
+        return true;
     }
 }
