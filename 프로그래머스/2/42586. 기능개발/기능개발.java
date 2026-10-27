@@ -2,35 +2,31 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        // [7, 3, 9]
-        // 7보다 작은 지 확인, 큰 거 나오면 stop
-        int[] days = new int[progresses.length];
-        for (int i = 0; i < progresses.length; i++) {
-            int progress = progresses[i];
-            int day = 0;
-            while(progress < 100) {
-                progress += speeds[i];
-                day++;
+        int N = progresses.length;
+        int[] days = new int[N];
+        // 계산식: 100 - 진행도 / 속도
+        for (int i = 0; i < N; i++) {
+            days[i] = (100 - progresses[i]) / speeds[i];
+            if ((100 - progresses[i]) % speeds[i] > 0) {
+                days[i] += 1;
             }
-            
-            days[i] = day;
         }
         
         Deque<Integer> dq = new ArrayDeque<>();
-        for (int d : days) {
-            dq.add(d);
+        for (int i = 0; i < N; i++) {
+            dq.add(days[i]);
         }
         
         ArrayList<Integer> ans = new ArrayList<>();
         while(!dq.isEmpty()) {
-            int cur = dq.poll();
             int count = 1;
-            while (!dq.isEmpty()) {
-                if (dq.peek() != null && dq.peek() <= cur) {
-                    dq.poll();
-                    count++;
-                } else break;
+            int cur = dq.poll();
+            
+            while(dq.peek() != null && dq.peek() <= cur) {
+                dq.poll();
+                count++;
             }
+            
             ans.add(count);
         }
         
