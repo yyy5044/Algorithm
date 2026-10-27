@@ -12,7 +12,7 @@ class Solution {
             }
         }
         
-        if (!dq.isEmpty()) return false;;
+        if (!dq.isEmpty()) return false;
 
         return true;
     }
