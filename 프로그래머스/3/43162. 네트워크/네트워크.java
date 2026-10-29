@@ -1,42 +1,39 @@
-import java.io.*;
 import java.util.*;
-
-//    0 1 2
-// 0| 1 1 0
-// 1| 1 1 0
-// 2| 0 0 1
 
 class Solution {
     static boolean[] visited;
+    static int N;
+    
     public int solution(int n, int[][] computers) {
+        // computers 자체가 인접 행렬이네?
         visited = new boolean[n];
+        N = n;
         
-        int ans = 0;
-        for (int i = 0; i < n; i++) {
+        int count = 0;
+        for (int i = 0; i < N; i++) {
             if (!visited[i]) {
-                bfs(i, n, computers);
-                ans++;
+                bfs(i, computers);
+                count++;
             }
         }
         
-        return ans;
+        return count;
     }
     
-    static void bfs(int start, int n, int[][] computers) {
-        Deque<Integer> q = new ArrayDeque<>();
-        visited[start] = true;
-        q.add(start);
+    static void bfs(int seed, int[][] computers) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        dq.add(seed);
+        visited[seed] = true;
         
-        while (!q.isEmpty()) {
-            int cur = q.poll();
+        while (!dq.isEmpty()) {
+            int cur = dq.poll();
             
-            for (int i = 0; i < n; i++) {
+            for (int i = 0; i < N; i++) {
                 if (!visited[i] && computers[cur][i] == 1) {
+                    dq.add(i);
                     visited[i] = true;
-                    q.add(i);
                 }
             }
- 
         }
     }
 }
