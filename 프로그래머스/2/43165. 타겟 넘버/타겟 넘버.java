@@ -1,29 +1,23 @@
-import java.io.*;
 import java.util.*;
 
 class Solution {
-    static int N;
-    static int count;
+    static int N, count;
     
     public int solution(int[] numbers, int target) {
-        N = numbers.length;
-        count = 0;
+        N = numbers.length; count = 0;
         
-        dfs(0, target, 0, numbers);
+        dfs(0, target, numbers, 0);
         
         return count;
     }
     
-    static void dfs(int depth, int t, int num, int[] numbers) {
+    static void dfs(int depth, int target, int[] numbers, int sum) {
         if (depth == N) {
-            if (num == t) {
-                count++;
-            }
-            
+            if (sum == target) count++;
             return;
         }
         
-        dfs(depth+1, t, num+numbers[depth], numbers);
-        dfs(depth+1, t, num-numbers[depth], numbers);
+        dfs(depth+1, target, numbers, sum - numbers[depth]);
+        dfs(depth+1, target, numbers, sum + numbers[depth]);
     }
 }
