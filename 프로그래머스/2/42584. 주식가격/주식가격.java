@@ -2,24 +2,23 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] prices) {
-        int n = prices.length;
-        int[] answer = new int[n];
-        for (int i = 0; i < n; i++) {
-            int cur = prices[i];
-            for (int j = i+1; j < n; j++) {
-                int target = prices[j];
-                
-                if (cur > target) {
-                    answer[i] = j-i;
-                    break;
-                }
+        Deque<Integer> dq = new ArrayDeque<>();
+        int[] answer = new int[prices.length];
+        
+        dq.push(0);
+        for (int time = 0; time < prices.length-1; time++) {
+            while (!dq.isEmpty() && prices[dq.peek()] > prices[time+1]) {
+                int n = dq.pop();
+                answer[n] = (time + 1) - n;
             }
+            
+            dq.push(time+1);
         }
         
-        for (int i = 0; i < n; i++) {
-            if (answer[i] == 0) {
-                answer[i] = (n-1) - i;
-            }
+        int t = prices.length - 1;
+        while (!dq.isEmpty()) {
+            int n = dq.pop();
+            answer[n] = t - n; 
         }
         
         return answer;
