@@ -6,15 +6,7 @@ class Solution {
     static ArrayList<String> list = new ArrayList<>();
     
     public int solution(String word) {
-        // A, E, I, O, U로 모든 단어를 만들어서 배열로 저장
-        // 사전순으로 정렬
-        // 풀 스캔해서 찾으면 인덱스 반환
-        // 5의 5승 = 3,125인가? -> 충분히 될듯?
-        for (int i = 1; i <= N; i++) {
-            dfs(i, 0, "");
-        }
-
-        Collections.sort(list);
+        dfs(0, "");
         // System.out.println(list);
         
         for (int i = 0; i < list.size(); i++) {
@@ -24,14 +16,14 @@ class Solution {
         return 0;
     }
     
-    static void dfs(int n, int depth, String str) {
-        if (depth == n) {
-            list.add(str);
+    static void dfs(int depth, String str) {
+        if (depth == N) {
             return;
         }
         
-        for (int i = 0; i < N; i++) {
-            dfs(n, depth+1, str + ch[i]);
+        for (char c : ch) {
+            list.add(str + c);
+            dfs(depth+1, str + c);
         }
     }
 }
