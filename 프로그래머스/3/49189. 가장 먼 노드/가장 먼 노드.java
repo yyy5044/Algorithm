@@ -23,12 +23,12 @@ class Solution {
         dq.add(new int[]{1, 1}); // 노드번호, 길이
         visited[1] = true;
         
-        ArrayList<int[]> list = new ArrayList<>();
+        int[] dist = new int[n+1];
         
         while (!dq.isEmpty()) {
             int[] cur = dq.poll();
             max = Math.max(max, cur[1]);
-            list.add(cur);
+            dist[cur[0]] = cur[1];
             
             ArrayList<Integer> tmp = adj.get(cur[0]);
             for (int i = 0; i < tmp.size(); i++) {
@@ -41,14 +41,10 @@ class Solution {
         }
         
         int count = 0;
-        for (int i = list.size() - 1; i >= 0; i--) {
-            int[] tmp = list.get(i);
-            if (tmp[1] == max) count++;
-            else break;
+        for (int i = 0; i < dist.length; i++) {
+            if (dist[i] == max) count++;
         }
-        
-        
-        
-        return count++;
+
+        return count;
     }
 }
