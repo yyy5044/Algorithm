@@ -37,7 +37,6 @@ class Solution {
             int req_time = cur[1];  
             int elapse_time = cur[2];
             
-            if (time < req_time) time = req_time; // 요청 시간이 안 됐으면 요청 시간으로 이동
             time += elapse_time; // 소요 시간 추가하기
             int turnaround_time = time - req_time;
             sum += turnaround_time;
