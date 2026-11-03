@@ -33,7 +33,7 @@ class Solution {
         Deque<int[]> dq = new ArrayDeque<>();
         int startX = 2*characterX; int startY = 2*characterY;
         int destX = 2*itemX; int destY = 2*itemY;
-        dq.add(new int[]{startX, startY, 1});
+        dq.add(new int[]{startX, startY, 0});
         visited[startY][startX] = true;
         
         int answer = 0;
@@ -55,13 +55,6 @@ class Solution {
                     visited[nr][nc] = true;
                 }
             }
-        }
-        
-        for (int i = 14; i > 0; i--) {
-            for (int j = 0; j < 15; j++) {
-                System.out.print(map[i][j]);
-            }
-            System.out.println();
         }
         
         return answer / 2;
